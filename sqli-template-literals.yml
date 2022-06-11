@@ -1,0 +1,40 @@
+rules:
+  - id: template-literals-sql-v1
+    message: Found template literals. It is recommended to completely eliminate usage of template literals on all SQL queries. The reason for this is that they offer no protection against SQL Injection vulnerabilities.
+    patterns:
+      - pattern-inside: |
+            const $VAR = `...`;
+      - pattern-regex: |
+            (WHERE|AND)\s.*=.*\{.*}|AND\s.*=.*\{.*}
+    severity: WARNING
+    metadata:
+      category: security
+      technology:
+        - typescript
+      cwe: "CWE-89: Improper Neutralization of Special Elements used in an SQL Command
+        ('SQL Injection')"
+      owasp: "A01: Injection"
+    languages:
+      - typescript
+
+  - id: template-literals-sql-v2
+    message: Found template literals. It is recommended to completely eliminate usage of template literals on all SQL queries. The reason for this is that they offer no protection against SQL Injection vulnerabilities.
+    patterns:
+      - pattern-inside: |
+            $VAR: `...`
+      - pattern-either:
+        - pattern-regex: ((?i)select\s).*=.*\{.*}
+        - pattern-regex: ((?i)insert\s).*=.*\{.*}
+        - pattern-regex: ((?i)delete\s).*=.*\{.*}
+        - pattern-regex: ((?i)update\s).*=.*\{.*}
+    severity: WARNING
+    metadata:
+      category: security
+      technology:
+        - typescript
+      cwe: "CWE-89: Improper Neutralization of Special Elements used in an SQL Command
+        ('SQL Injection')"
+      owasp: "A01: Injection"
+    languages:
+      - typescript
+
